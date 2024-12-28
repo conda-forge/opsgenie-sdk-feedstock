@@ -7,20 +7,21 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/opsgenie-sdk-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/opsgenie-sdk-{{ version }}.tar.gz
   sha256: c38a2f0c7acbcbeb9202ced80ec857b5eda2d99919392fed4083bdfa7be32669
 
 build:
-  number: 0
+  number: 1
   noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
-    - python >=3.4
+    - python {{ python_min }}
     - pip
+    - setuptools
   run:
-    - python >=3.4
+    - python >={{ python_min }}
     - certifi
     - python-dateutil
     - setuptools >=21.0.0
@@ -36,6 +37,7 @@ test:
     - pip check
   requires:
     - pip
+    - python {{ python_min }}
 
 about:
   home: https://github.com/opsgenie/opsgenie-python-sdk
